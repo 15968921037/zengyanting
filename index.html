@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interactive Population Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map { height: 400px; width: 100%; }
+    </style>
+</head>
+<body>
+    <h1>Clean Energy Information Map</h1>
+    <img src="/Users/alin/Downloads/banner2.jpg" alt="Sustainable Energy" style="width: auto; height: auto;">
+    <select id="countrySelect" onchange="updateMap()"></select>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // 嵌入的JSON数据
+        var jsonData = [
+
+            
+             // {"Country": "China", "PopulationPercent": 1409517397, "Area": 9596961, "Latitude": 35.8617, "Longitude": 104.1954},
+            // {"Country": "India", "Population": 1339180127, "Area": 3287263, "Latitude": 20.5937, "Longitude": 78.9629},
+            // {"Country": "United States", "Population": 331002651, "Area": 9833517, "Latitude": 37.0902, "Longitude": -95.7129},
+            // 更多国家数据
+
+            
+    
+          
+    {"Country": "China", "PopulationPercent": 17.88, "ProductionEnergy": 2943, "ConsumptionEnergy": 2453, "Area": 9596961, "Latitude": 35.8617, "Longitude": 104.1954},
+    {"Country": "India", "PopulationPercent": 17.77, "ProductionEnergy": 399, "ConsumptionEnergy": 332, "Area": 3287263, "Latitude": 20.5937, "Longitude": 78.9629},
+    {"Country": "United States", "PopulationPercent": 4.24, "ProductionEnergy": 862, "ConsumptionEnergy": 882, "Area": 9833517, "Latitude": 37.0902, "Longitude": -95.7129},
+    {"Country": "Indonesia", "PopulationPercent": 3.45, "ProductionEnergy": 67, "ConsumptionEnergy": 56, "Area": 1904569, "Latitude": -0.7893, "Longitude": 113.9213},
+    {"Country": "Pakistan", "PopulationPercent": 2.96, "ProductionEnergy": 45, "ConsumptionEnergy": 43, "Area": 881913, "Latitude": 30.3753, "Longitude": 69.3451},
+    {"Country": "Nigeria", "PopulationPercent": 2.74, "ProductionEnergy": 8, "ConsumptionEnergy": 10, "Area": 923768, "Latitude": 9.0820, "Longitude": 8.6753},
+    {"Country": "Brazil", "PopulationPercent": 2.7, "ProductionEnergy": 509, "ConsumptionEnergy": 507, "Area": 8515767, "Latitude": -14.2350, "Longitude": -51.9253},
+    {"Country": "Bangladesh", "PopulationPercent": 2.15, "ProductionEnergy": 1, "ConsumptionEnergy": 1, "Area": 147570, "Latitude": 23.6850, "Longitude": 90.3563},
+    {"Country": "Russia", "PopulationPercent": 1.81, "ProductionEnergy": 222, "ConsumptionEnergy": 220, "Area": 17098242, "Latitude": 61.5240, "Longitude": 105.3188},
+    {"Country": "Mexico", "PopulationPercent": 1.6, "ProductionEnergy": 81, "ConsumptionEnergy": 74, "Area": 1964375, "Latitude": 23.6345, "Longitude": -102.5528},
+    {"Country": "Japan", "PopulationPercent": 1.55, "ProductionEnergy": 217, "ConsumptionEnergy": 208, "Area": 377975, "Latitude": 36.2048, "Longitude": 138.2529}
+
+
+
+
+        ];
+
+        // 初始化地图
+        var map = L.map('map').setView([20, 0], 2);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // 动态填充下拉列表
+        var select = document.getElementById('countrySelect');
+        jsonData.forEach(function(country) {
+            var option = document.createElement('option');
+            option.value = country.Country;
+            option.textContent = country.Country;
+            select.appendChild(option);
+        });
+
+        // 更新地图函数
+        function updateMap() {
+            var selectedCountry = jsonData.find(c => c.Country === select.value);
+            if (selectedCountry) {
+                var newLatLng = new L.LatLng(selectedCountry.Latitude, selectedCountry.Longitude);
+                L.marker(newLatLng).addTo(map)
+                    .bindPopup(selectedCountry.Country + ": Population Percent: " + selectedCountry.PopulationPercent+ "; ProductionEnergy: "+selectedCountry.ProductionEnergy+ "; ConsumptionEnergy: "+selectedCountry.ConsumptionEnergy)
+                    .openPopup();
+                map.setView(newLatLng, 5);
+
+       
+
+
+        //           var popupContent = `
+        //     <b>${selectedCountry.Country}</b><br>
+        //     Population Percent: ${selectedCountry.WorldPopulationPercent}%<br>
+        //     Production Energy (TWh): ${selectedCountry.ProductionEnergy}<br>
+        //     Consumption Energy (TWh): ${selectedCountry.ConsumptionEnergy}
+        // `;  // 使用反引号 (`) 和 ${} 来插入变量和实现多行字符串
+
+            }s
+        }
+        
+        // 默认更新地图到第一个国家
+        select.selectedIndex = 0;
+        updateMap();
+    </script>
+</body>
+</html>
